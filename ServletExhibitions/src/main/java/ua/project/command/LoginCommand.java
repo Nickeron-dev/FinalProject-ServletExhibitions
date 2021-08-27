@@ -1,37 +1,63 @@
 package ua.project.command;
 
 import ua.project.model.entity.Role;
+import ua.project.model.entity.User;
+import ua.project.model.services.UserService;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
+import static java.util.Objects.nonNull;
 
 public class LoginCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        String name = request.getParameter("name");
-        String password = request.getParameter("password");
 
-        if ( name == null || name.equals("") || password == null || password.equals("") ) {
-            return "/WEB-INF/view/login.jsp";
+        final UserService userService = new UserService();
+        Role role = Role.GUEST;
+        final HttpSession session = request.getSession();
+        try {
+            if ((session.getAttribute("role").equals(Role.ADMIN)
+                            || session.getAttribute("role").equals(Role.USER))
+                    && request.getHeader("referer").contains("login")) {
+                return "/WEB-INF/index.jsp";
+            }
+        } catch (NullPointerException exc) {
+
         }
+        if (nonNull(session) &&
+                nonNull(session.getAttribute("login")) &&
+                nonNull(session.getAttribute("password"))) {
 
-        System.out.println(name + " " + password);
+            role = (Role) session.getAttribute("role");
 
-        // todo: check login with DB
+        } else if (userService.login(request.getParameter("login")).isPresent()) {
+            User user = userService.login(request.getParameter("login")).get();
+            role = user.getRole();
 
-        if (CommandUtility.checkUserIsLogged(request, name)) {
-            return "/WEB-INF/error.jsp";
+            request.getSession().setAttribute("password", user.getPassword());
+            request.getSession().setAttribute("login", user.getLogin());
+            request.getSession().setAttribute("role", user.getRole());
+
         }
+        if (role.equals(Role.ADMIN)) {
 
-        if (name.equals("admin")) {
-            CommandUtility.setUserRole(request, Role.ADMIN, name);
             return "/WEB-INF/view/admin_menu.jsp";
-        } else if (name.equals("user")) {
-            CommandUtility.setUserRole(request, Role.USER, name);
-            return "/WEB-INF/user/user_menu.jsp";
+
+        } else if (role.equals(Role.USER)) {
+
+            return "/WEB-INF/view/user_menu.jsp";
+
         } else {
-            CommandUtility.setUserRole(request, Role.GUEST, name);
-            return "/login.jsp";
+
+            return "/WEB-INF/view/login.jsp";
         }
     }
 }

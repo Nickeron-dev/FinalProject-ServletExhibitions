@@ -21,7 +21,7 @@
 
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
-        <url-pattern>/login</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
 
     <servlet>
@@ -34,15 +34,15 @@
     </servlet-mapping>
 
     <!--Logout servlet-->
-    <servlet>
-        <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>ua.project.servlets.servlet.LogoutServlet</servlet-class>
-    </servlet>
+<!--    <servlet>-->
+<!--        <servlet-name>LogoutServlet</servlet-name>-->
+<!--        <servlet-class>ua.project.servlets.servlet.LogoutServlet</servlet-class>-->
+<!--    </servlet>-->
 
-    <servlet-mapping>
-        <servlet-name>LogoutServlet</servlet-name>
-        <url-pattern>/logout</url-pattern>
-    </servlet-mapping>
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>LogoutServlet</servlet-name>-->
+<!--        <url-pattern>/logout</url-pattern>-->
+<!--    </servlet-mapping>-->
     
     <listener>
         <listener-class>ua.project.servlets.listeners.LocalizationListener</listener-class>

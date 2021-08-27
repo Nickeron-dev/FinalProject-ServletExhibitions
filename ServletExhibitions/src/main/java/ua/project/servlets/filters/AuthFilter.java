@@ -22,69 +22,37 @@ public class AuthFilter implements Filter {
     }
 
     @Override
-    public void doFilter(final ServletRequest request,
-                         final ServletResponse response,
+    public void doFilter(final ServletRequest servletRequest,
+                         final ServletResponse servletResponse,
                          final FilterChain filterChain)
 
             throws IOException, ServletException {
+        User user;
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        String path = request.getRequestURI();
+        try {
+            if ((path.contains("login") &&
+                    (request.getSession().getAttribute("role").equals(Role.ADMIN)
+                            || request.getSession().getAttribute("role").equals(Role.USER)))
+                || (path.contains("login") && request.getHeader("referer").contains("login"))) {
+                request.getSession().setAttribute("role", request.getSession().getAttribute("role"));
+                servletResponse.getWriter().append("You are already logged in!");
+            }
+        } catch (NullPointerException exc) {
 
-        final HttpServletRequest req = (HttpServletRequest) request;
-        final HttpServletResponse res = (HttpServletResponse) response;
-
-        final UserService userService = new UserService();
-
-        final HttpSession session = req.getSession();
-
-        if (nonNull(session) &&
-                nonNull(session.getAttribute("login")) &&
-                nonNull(session.getAttribute("password"))) {
-
-            final Role role = (Role) session.getAttribute("role");
-
-            moveToMenu(req, res, role);
-
-
-        } else if (userService.login(req.getParameter("login")).isPresent()) {
-            User user = userService.login(req.getParameter("login")).get();
-            final Role role = user.getRole();
-
-            req.getSession().setAttribute("password", user.getPassword());
-            req.getSession().setAttribute("login", user.getLogin());
-            req.getSession().setAttribute("role", user.getRole());
-
-            moveToMenu(req, res, role);
-
-        } else {
-
-            moveToMenu(req, res, Role.GUEST);
+        }
+        
+        if(path.contains("statistics")) {
+            if (request.getSession().getAttribute("role").equals(Role.ADMIN)) {
+                filterChain.doFilter(servletRequest,servletResponse);
+            }else{
+                servletResponse.getWriter().append("AccessDenied");
+                return;
+            }
+        }else{
+            filterChain.doFilter(servletRequest,servletResponse);
         }
     }
-
-    /**
-     * Move user to menu.
-     * If access 'admin' move to admin menu.
-     * If access 'user' move to user menu.
-     */
-    private void moveToMenu(final HttpServletRequest req,
-                            final HttpServletResponse res,
-                            final Role role)
-            throws ServletException, IOException {
-
-
-        if (role.equals(Role.ADMIN)) {
-
-            req.getRequestDispatcher("/WEB-INF/view/admin_menu.jsp").forward(req, res);
-
-        } else if (role.equals(Role.USER)) {
-
-            req.getRequestDispatcher("/WEB-INF/view/user_menu.jsp").forward(req, res);
-
-        } else {
-
-            req.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(req, res);
-        }
-    }
-
 
     @Override
     public void destroy() {

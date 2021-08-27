@@ -14,12 +14,14 @@
 <%
     request.setAttribute("home", View.view.getBundleText(ITextsPaths.HOME));
     request.setAttribute("welcome", View.view.getBundleText(ITextsPaths.WELCOME));
+    request.setAttribute("role", request.getSession().getAttribute("role"));
 %>
 <header>
     <form action="${pageContext.request.contextPath}/" method="post">
         <input type="submit" name="ukr" value="UKR">
         <input type="submit" name="eng" value="ENG">
     </form>
+    <p>Current Role: ${role}</p>
 
     <a href="${pageContext.request.contextPath}/">${home}</a>
 </header>
