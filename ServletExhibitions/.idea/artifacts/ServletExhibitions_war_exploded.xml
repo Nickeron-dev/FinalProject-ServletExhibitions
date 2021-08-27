@@ -14,8 +14,14 @@
           <element id="module-output" name="ServletExhibitions" />
         </element>
         <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.25" />
+          <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.11.4" />
+          <element id="library" level="project" name="Maven: commons-dbcp:commons-dbcp:1.4" />
+          <element id="library" level="project" name="Maven: commons-pool:commons-pool:1.5.4" />
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
           <element id="library" level="project" name="Maven: taglibs:standard:1.1.2" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-core:2.14.1" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.14.1" />
         </element>
       </element>
       <element id="directory" name="META-INF">

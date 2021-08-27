@@ -1,14 +1,14 @@
 package ua.project.servlets.filters;
 
-import ua.project.dao.UserDAO;
 import ua.project.model.entity.Role;
+import ua.project.model.entity.User;
+import ua.project.model.services.UserService;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static java.util.Objects.nonNull;
 
@@ -31,15 +31,10 @@ public class AuthFilter implements Filter {
         final HttpServletRequest req = (HttpServletRequest) request;
         final HttpServletResponse res = (HttpServletResponse) response;
 
-        final String login = req.getParameter("login");
-        final String password = req.getParameter("password");
-
-        @SuppressWarnings("unchecked")
-        final AtomicReference<UserDAO> dao = (AtomicReference<UserDAO>) req.getServletContext().getAttribute("dao");
+        final UserService userService = new UserService();
 
         final HttpSession session = req.getSession();
 
-        //Logged user.
         if (nonNull(session) &&
                 nonNull(session.getAttribute("login")) &&
                 nonNull(session.getAttribute("password"))) {
@@ -49,13 +44,13 @@ public class AuthFilter implements Filter {
             moveToMenu(req, res, role);
 
 
-        } else if (dao.get().userIsExist(login, password)) {
+        } else if (userService.login(req.getParameter("login")).isPresent()) {
+            User user = userService.login(req.getParameter("login")).get();
+            final Role role = user.getRole();
 
-            final Role role = dao.get().getRoleByLoginPassword(login, password);
-
-            req.getSession().setAttribute("password", password);
-            req.getSession().setAttribute("login", login);
-            req.getSession().setAttribute("role", role);
+            req.getSession().setAttribute("password", user.getPassword());
+            req.getSession().setAttribute("login", user.getLogin());
+            req.getSession().setAttribute("role", user.getRole());
 
             moveToMenu(req, res, role);
 
