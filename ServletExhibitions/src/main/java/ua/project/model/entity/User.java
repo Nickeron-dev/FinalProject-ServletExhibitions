@@ -1,4 +1,4 @@
-package ua.project.model;
+package ua.project.model.entity;
 
 /**
  * Author : Pavel Ravvich.
@@ -14,12 +14,12 @@ public class User {
 
     private String password;
 
-    private ROLE role;
+    private Role role;
 
     public User() {
     }
 
-    public User(int id, String login, String password, ROLE role) {
+    public User(int id, String login, String password, Role role) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -50,15 +50,11 @@ public class User {
         this.password = password;
     }
 
-    public ROLE getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(ROLE role) {
+    public void setRole(Role role) {
         this.role = role;
-    }
-
-    public enum ROLE {
-        USER, ADMIN, UNKNOWN
     }
 }

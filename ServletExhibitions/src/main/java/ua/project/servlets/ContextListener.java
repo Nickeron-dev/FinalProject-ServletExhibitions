@@ -2,7 +2,8 @@ package ua.project.servlets;
 
 
 import ua.project.dao.UserDAO;
-import ua.project.model.User;
+import ua.project.model.entity.Role;
+import ua.project.model.entity.User;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -25,8 +26,8 @@ public class ContextListener implements ServletContextListener {
 
         dao = new AtomicReference<>(new UserDAO());
 
-        dao.get().add(new User(1, "Pavel", "1", User.ROLE.ADMIN));
-        dao.get().add(new User(2, "Egor", "1", User.ROLE.USER));
+        dao.get().add(new User(1, "Pavel", "1", Role.ADMIN));
+        dao.get().add(new User(2, "Egor", "1", Role.USER));
 
         final ServletContext servletContext =
                 servletContextEvent.getServletContext();

@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<h1>Hello ADMIN!</h1>
+<h1>Привіт ADMIN!</h1>
 <a href="<c:url value='/logout' />">Logout</a>
 </body>
 </html>

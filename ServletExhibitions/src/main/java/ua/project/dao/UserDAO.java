@@ -1,6 +1,7 @@
 package ua.project.dao;
 
-import ua.project.model.User;
+import ua.project.model.entity.Role;
+import ua.project.model.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +55,8 @@ public class UserDAO {
         return store.add(user);
     }
 
-    public User.ROLE getRoleByLoginPassword(final String login, final String password) {
-        User.ROLE result = User.ROLE.UNKNOWN;
+    public Role getRoleByLoginPassword(final String login, final String password) {
+        Role result = Role.GUEST;
 
         for (User user : store) {
             if (user.getLogin().equals(login) && user.getPassword().equals(password)) {

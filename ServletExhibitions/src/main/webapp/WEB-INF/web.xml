@@ -4,10 +4,19 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-    <!--filter check exist session for sign in-->
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>ua.project.servlets.filters.EncodingFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <filter>
         <filter-name>AuthFilter</filter-name>
-        <filter-class>ua.project.servlets.filter.AuthFilter</filter-class>
+        <filter-class>ua.project.servlets.filters.AuthFilter</filter-class>
     </filter>
 
     <filter-mapping>
