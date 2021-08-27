@@ -1,3 +1,5 @@
+<%@ page import="ua.project.view.View" %>
+<%@ page import="ua.project.view.ITextsPaths" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html> <!--xmlns="http://www.w3.org/1999/xhtml"
@@ -9,13 +11,18 @@
 
 </head>
 <body>
+<%
+    request.setAttribute("home", View.view.getBundleText(ITextsPaths.HOME));
+    request.setAttribute("welcome", View.view.getBundleText(ITextsPaths.WELCOME));
+%>
 <header>
-    <form action="/change-language" method="post">
+    <form action="${pageContext.request.contextPath}/" method="post">
         <input type="submit" name="ukr" value="UKR">
         <input type="submit" name="eng" value="ENG">
     </form>
-    <a href="/home">Головна</a>
+
+    <a href="${pageContext.request.contextPath}/">${home}</a>
 </header>
-<h1>Welcome to our exhibitions!</h1>
+<h1>${welcome}</h1>
 </body>
 </html>

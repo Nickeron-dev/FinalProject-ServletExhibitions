@@ -19,12 +19,18 @@ public class LocalizationListener implements ServletRequestListener {
 
     @Override
     public void requestInitialized(ServletRequestEvent servletRequestEvent) {
-        if (servletRequestEvent.getServletRequest().getParameter("ukr").equals("UKR")) {
-            View.view.changeLocale(Optional.of(new Locale(ILocaleNames.UKR_LANGUAGE, ILocaleNames.UKR_COUNTRY)));
-            System.out.println("Changed to ukr");
-        } else if (servletRequestEvent.getServletRequest().getParameter("en").equals("ENG")){
-            View.view.changeLocale(Optional.of(new Locale(ILocaleNames.DEFAULT_LANGUAGE)));
-            System.out.println("Changed to eng");
+        try {
+            if (servletRequestEvent.getServletRequest().getParameter("ukr").equals("UKR")) {
+                View.view.changeLocale(Optional.of(new Locale(ILocaleNames.UKR_LANGUAGE, ILocaleNames.UKR_COUNTRY)));
+            }
+        } catch (NullPointerException exc) {
+
+        }
+        try {
+            if (servletRequestEvent.getServletRequest().getParameter("eng").equals("ENG")) {
+                View.view.changeLocale(Optional.of(new Locale(ILocaleNames.DEFAULT_LANGUAGE)));
+            }
+        } catch (NullPointerException exc) {
         }
     }
 }

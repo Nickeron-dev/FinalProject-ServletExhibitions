@@ -44,9 +44,9 @@
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     
-<!--    <listener>-->
-<!--        <listener-class>ua.project.servlets.listeners.LocalizationListener</listener-class>-->
-<!--    </listener>-->
+    <listener>
+        <listener-class>ua.project.servlets.listeners.LocalizationListener</listener-class>
+    </listener>
     
     <welcome-file-list>
         <welcome-file>/WEB-INF/index.jsp</welcome-file>

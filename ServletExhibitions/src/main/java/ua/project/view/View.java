@@ -11,7 +11,7 @@ public class View {
     public static View view = new View();
 
     private ResourceBundle bundle =
-            ResourceBundle.getBundle(BUNDLE_NAME, new Locale("en"));
+            ResourceBundle.getBundle(BUNDLE_NAME, new Locale("ua"));
 
     public View() {
 
