@@ -1,0 +1,30 @@
+package ua.project.servlets.listeners;
+
+import ua.project.view.ILocaleNames;
+import ua.project.view.ITextsPaths;
+import ua.project.view.View;
+
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.ServletRequestListener;
+import javax.servlet.http.HttpSessionListener;
+import java.util.Locale;
+import java.util.Optional;
+
+public class LocalizationListener implements ServletRequestListener {
+
+    @Override
+    public void requestDestroyed(ServletRequestEvent servletRequestEvent) {
+
+    }
+
+    @Override
+    public void requestInitialized(ServletRequestEvent servletRequestEvent) {
+        if (servletRequestEvent.getServletRequest().getParameter("ukr").equals("UKR")) {
+            View.view.changeLocale(Optional.of(new Locale(ILocaleNames.UKR_LANGUAGE, ILocaleNames.UKR_COUNTRY)));
+            System.out.println("Changed to ukr");
+        } else if (servletRequestEvent.getServletRequest().getParameter("en").equals("ENG")){
+            View.view.changeLocale(Optional.of(new Locale(ILocaleNames.DEFAULT_LANGUAGE)));
+            System.out.println("Changed to eng");
+        }
+    }
+}
