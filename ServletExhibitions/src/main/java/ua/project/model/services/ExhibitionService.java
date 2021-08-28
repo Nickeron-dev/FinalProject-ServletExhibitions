@@ -4,7 +4,9 @@ import ua.project.model.dao.DaoFactory;
 import ua.project.model.dao.ExhibitionDao;
 import ua.project.model.dao.UserDao;
 import ua.project.model.entity.Exhibition;
+import ua.project.model.entity.User;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 public class ExhibitionService {
@@ -14,6 +16,12 @@ public class ExhibitionService {
     public List<Exhibition> findAll() {
         try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
             return exhibitionDao.findAll();
+        }
+    }
+
+    public void saveNewExhibition(Exhibition exhibition) throws SQLIntegrityConstraintViolationException {
+        try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
+            exhibitionDao.create(exhibition);
         }
     }
 }

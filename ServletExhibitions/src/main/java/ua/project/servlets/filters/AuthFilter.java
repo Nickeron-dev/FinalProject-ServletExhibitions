@@ -27,7 +27,6 @@ public class AuthFilter implements Filter {
                          final FilterChain filterChain)
 
             throws IOException, ServletException {
-        User user;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String path = request.getRequestURI();
         try {
@@ -42,14 +41,19 @@ public class AuthFilter implements Filter {
 
         }
         
-        if(path.contains("statistics")) {
-            if (request.getSession().getAttribute("role").equals(Role.ADMIN)) {
-                filterChain.doFilter(servletRequest,servletResponse);
-            }else{
-                servletResponse.getWriter().append("AccessDenied");
-                return;
+        if(path.contains("statistics") || path.contains("addExhibition")) {
+            try {
+                if (request.getSession().getAttribute("role").equals(Role.ADMIN)) {
+                    filterChain.doFilter(servletRequest,servletResponse);
+                }else{
+                    servletResponse.getWriter().append("AccessDenied");
+                    return;
+                }
+            } catch (NullPointerException ignored) {
+                ignored.printStackTrace();
             }
-        }else{
+
+        } else {
             filterChain.doFilter(servletRequest,servletResponse);
         }
     }

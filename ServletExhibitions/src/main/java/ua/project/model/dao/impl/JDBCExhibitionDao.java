@@ -2,16 +2,11 @@ package ua.project.model.dao.impl;
 
 import ua.project.model.dao.ExhibitionDao;
 import ua.project.model.dao.mapper.ExhibitionMapper;
-import ua.project.model.dao.mapper.UserMapper;
 import ua.project.model.entity.Exhibition;
-import ua.project.model.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import static java.util.Optional.of;
 
 public class JDBCExhibitionDao implements ExhibitionDao {
     private final Connection connection;
@@ -23,29 +18,33 @@ public class JDBCExhibitionDao implements ExhibitionDao {
 
     @Override
     public void create(Exhibition entity) throws SQLIntegrityConstraintViolationException {
-//        try(PreparedStatement ps = connection.prepareCall("INSERT INTO users (username, password, email, role)" +
-//                " VALUES (?, ?, ?, ?); ")) {
-//            connection.setAutoCommit(false);
-//            ps.setString(1, entity.getLogin());
-//            ps.setString(2, entity.getPassword());
-//            ps.setString(3, entity.getEmail());
-//            ps.setString(4, entity.getRole().toString());
-//            ps.executeUpdate();
-//            connection.commit();
-//        } catch (SQLIntegrityConstraintViolationException exc) {
-//            try {
-//                connection.rollback();
-//            } catch (SQLException ignored) {
-//
-//            }
-//            throw new SQLIntegrityConstraintViolationException();
-//        } catch (SQLException e) {
-//            try {
-//                connection.rollback();
-//            } catch (SQLException ignored) {
-//
-//            }
-//        }
+        try(PreparedStatement ps = connection.prepareCall("INSERT INTO exhibitions (topic, startDate, endDate, startTime, endTime, rooms, price, state)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
+            connection.setAutoCommit(false);
+            ps.setString(1, entity.getTopic());
+            ps.setString(2, entity.getStartDate().toString());
+            ps.setString(3, entity.getEndDate().toString());
+            ps.setString(4, entity.getStartTimeEveryDay().toString());
+            ps.setString(5, entity.getEndTimeEveryDay().toString());
+            ps.setString(6, entity.getRooms().toString());
+            ps.setString(7, entity.getPrice().toString());
+            ps.setString(8, entity.getState().toString());
+            ps.executeUpdate();
+            connection.commit();
+        } catch (SQLIntegrityConstraintViolationException exc) {
+            try {
+                connection.rollback();
+            } catch (SQLException ignored) {
+
+            }
+            throw new SQLIntegrityConstraintViolationException();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ignored) {
+
+            }
+        }
     }
 
     @Override
