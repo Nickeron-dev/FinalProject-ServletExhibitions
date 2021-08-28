@@ -1,6 +1,7 @@
 package ua.project.model.dao.impl;
 
 import ua.project.model.dao.DaoFactory;
+import ua.project.model.dao.ExhibitionDao;
 import ua.project.model.dao.UserDao;
 
 import javax.sql.DataSource;
@@ -13,6 +14,11 @@ public class JDBCDaoFactory extends DaoFactory {
     @Override
     public UserDao createUserDao() {
         return new JDBCUserDao(getConnection());
+    }
+
+    @Override
+    public ExhibitionDao createExhibitionDao() {
+        return new JDBCExhibitionDao(getConnection());
     }
 
 

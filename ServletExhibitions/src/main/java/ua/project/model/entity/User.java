@@ -1,10 +1,7 @@
 package ua.project.model.entity;
 
 /**
- * Author : Pavel Ravvich.
- * Created : 29/10/2017.
- * <p>
- * DTO obj determines user's state.
+ * @author Illia Koshkin
  */
 public class User {
 
