@@ -18,6 +18,8 @@
         <input type="submit" name="eng" value="ENG">
     </form>
 
+    <a href="${pageContext.request.contextPath}/registration">registration</a>
+
     <a href="${pageContext.request.contextPath}/">${home}</a>
 </header>
     <div class="form">

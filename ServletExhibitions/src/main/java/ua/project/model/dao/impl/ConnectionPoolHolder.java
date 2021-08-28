@@ -14,7 +14,7 @@ public class ConnectionPoolHolder {
                     BasicDataSource ds = new BasicDataSource();
                     ds.setUrl("jdbc:mysql://localhost:3306/servletexhibitions");
                     ds.setUsername("root");
-                    ds.setPassword("rootpass");
+                    ds.setPassword("trumpet");
                     ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
                     ds.setMinIdle(5);
                     ds.setMaxIdle(10);

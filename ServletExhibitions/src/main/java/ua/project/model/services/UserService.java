@@ -4,6 +4,8 @@ import ua.project.model.dao.DaoFactory;
 import ua.project.model.dao.UserDao;
 import ua.project.model.entity.User;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Optional;
 
 public class UserService {
@@ -15,5 +17,11 @@ public class UserService {
             result = userDao.findByName(name);
         }
         return result;
+    }
+
+    public void saveNewUser(User user) throws SQLIntegrityConstraintViolationException {
+        try(UserDao userDao = daoFactory.createUserDao()) {
+            userDao.create(user);
+        }
     }
 }

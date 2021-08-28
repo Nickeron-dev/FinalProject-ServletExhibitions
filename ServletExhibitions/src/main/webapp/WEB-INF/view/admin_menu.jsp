@@ -8,6 +8,8 @@
 <body>
 
 <h1>Привіт ADMIN!</h1>
+<a href="${pageContext.request.contextPath}/login">login</a>
+<a href="${pageContext.request.contextPath}/registration">registration</a>
 <a href="<c:url value='/logout' />">Logout</a>
 </body>
 </html>

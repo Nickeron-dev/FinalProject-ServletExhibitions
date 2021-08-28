@@ -5,13 +5,11 @@ import ua.project.model.dao.mapper.UserMapper;
 import ua.project.model.entity.User;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 public class JDBCUserDao implements UserDao {
-    private Connection connection;
+    private final Connection connection;
 
     public JDBCUserDao(Connection connection) {
         this.connection = connection;
@@ -19,8 +17,30 @@ public class JDBCUserDao implements UserDao {
 
 
     @Override
-    public void create(User entity) {
+    public void create(User entity) throws SQLIntegrityConstraintViolationException {
+        try(PreparedStatement ps = connection.prepareCall("INSERT INTO users (username, password, email, role)" +
+                " VALUES (?, ?, ?, ?); ")) {
+            connection.setAutoCommit(false);
+            ps.setString(1, entity.getLogin());
+            ps.setString(2, entity.getPassword());
+            ps.setString(3, entity.getEmail());
+            ps.setString(4, entity.getRole().toString());
+            ps.executeUpdate();
+            connection.commit();
+        } catch (SQLIntegrityConstraintViolationException exc) {
+            try {
+                connection.rollback();
+            } catch (SQLException ignored) {
 
+            }
+            throw new SQLIntegrityConstraintViolationException();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ignored) {
+
+            }
+        }
     }
 
     @Override

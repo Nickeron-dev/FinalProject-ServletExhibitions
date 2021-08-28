@@ -21,6 +21,8 @@
         <input type="submit" name="ukr" value="UKR">
         <input type="submit" name="eng" value="ENG">
     </form>
+    <a href="${pageContext.request.contextPath}/login">login</a>
+    <a href="${pageContext.request.contextPath}/registration">registration</a>
     <p>Current Role: ${role}</p>
 
     <a href="${pageContext.request.contextPath}/">${home}</a>
