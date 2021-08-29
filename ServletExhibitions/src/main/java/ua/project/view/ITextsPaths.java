@@ -18,4 +18,6 @@ public interface ITextsPaths {
     String CANCEL = "table.cancel";
     String PLAN = "table.plan";
     String ELEMENTS_NOT_FOUND = "table.elements.not.found";
+
+    String VISITORS = "statistics.table.visitors";
 }

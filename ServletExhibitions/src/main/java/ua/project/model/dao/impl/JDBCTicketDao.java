@@ -1,30 +1,30 @@
 package ua.project.model.dao.impl;
 
-import ua.project.model.dao.UserDao;
+import ua.project.model.dao.TicketDao;
 import ua.project.model.dao.mapper.UserMapper;
+import ua.project.model.entity.Ticket;
 import ua.project.model.entity.User;
 
 import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
-public class JDBCUserDao implements UserDao {
+public class JDBCTicketDao implements TicketDao {
     private final Connection connection;
 
-    public JDBCUserDao(Connection connection) {
+    public JDBCTicketDao(Connection connection) {
         this.connection = connection;
     }
 
-
     @Override
-    public void create(User entity) throws SQLIntegrityConstraintViolationException {
-        try(PreparedStatement ps = connection.prepareCall("INSERT INTO users (username, password, email, role)" +
+    public void create(Ticket entity) throws SQLIntegrityConstraintViolationException {
+        try(PreparedStatement ps = connection.prepareCall("INSERT INTO tickets (exhibitionTopic, exhibitionId, userEmail, userId)" +
                 " VALUES (?, ?, ?, ?); ")) {
             connection.setAutoCommit(false);
-            ps.setString(1, entity.getLogin());
-            ps.setString(2, entity.getPassword());
-            ps.setString(3, entity.getEmail());
-            ps.setString(4, entity.getRole().toString());
+            ps.setString(1, entity.getExhibitionTopic());
+            ps.setInt(2, entity.getExhibitionId());
+            ps.setString(3, entity.getUserEmail());
+            ps.setInt(4, entity.getUserId());
             ps.executeUpdate();
             connection.commit();
         } catch (SQLIntegrityConstraintViolationException exc) {
@@ -44,19 +44,17 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public Optional<User>findById(int id) {
-        return null;
-    }
-
-
-
-    @Override
-    public List<User> findAll() {
+    public Optional<Ticket> findById(int id) {
         return null;
     }
 
     @Override
-    public void update(User entity) {
+    public List<Ticket> findAll() {
+        return null;
+    }
+
+    @Override
+    public void update(Ticket entity) {
 
     }
 
@@ -66,29 +64,23 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public void close()  {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public void close() {
+
     }
 
     @Override
-    public Optional<User> findByName(String name) {
-
-        Optional<User> result = Optional.empty();
-        try(PreparedStatement ps = connection.prepareCall("SELECT * FROM users WHERE username = ?")){
-            ps.setString( 1, name);
+    public long countByExhibitionId(Integer exhibitionId) {
+        long amount = 0;
+        try(PreparedStatement ps = connection.prepareCall("SELECT COUNT(*) FROM tickets WHERE exhibitionId = ?")){
+            ps.setInt( 1, exhibitionId);
             ResultSet rs;
             rs = ps.executeQuery();
-            UserMapper mapper = new UserMapper();
             if (rs.next()){
-                result = Optional.of(mapper.extractFromResultSet(rs));
+                amount = rs.getInt(1);
             }
         }catch (Exception ex){
             throw new RuntimeException(ex);
         }
-        return result;
+        return amount;
     }
 }

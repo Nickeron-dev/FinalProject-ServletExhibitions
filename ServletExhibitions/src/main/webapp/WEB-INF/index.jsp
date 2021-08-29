@@ -1,8 +1,9 @@
 <%@ page import="ua.project.view.View" %>
 <%@ page import="ua.project.view.ITextsPaths" %>
 <%@ page import="ua.project.model.services.ExhibitionService" %>
+<%@ page import="ua.project.model.entity.Role" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html> <!--xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
@@ -31,6 +32,15 @@
     request.setAttribute("cancel", View.view.getBundleText(ITextsPaths.CANCEL));
     request.setAttribute("plan", View.view.getBundleText(ITextsPaths.PLAN));
     request.setAttribute("noElementsFound", View.view.getBundleText(ITextsPaths.ELEMENTS_NOT_FOUND));
+    try {
+        if (request.getSession().getAttribute("role").equals(Role.ADMIN)) {
+            request.setAttribute("isAdmin", "true");
+        }
+    } catch (NullPointerException ignored) {
+
+    }
+
+    request.setAttribute("pagesNumber", service.pagesAvailable());
 %>
 <header>
     <form action="${pageContext.request.contextPath}/" method="post">
@@ -56,17 +66,17 @@
         <th>${price}</th>
         <th>${state}</th>
         <th>${buyTicket}</th>
-<%--        <c:if test="${isAdmin == true}">--%>
-<%--            <th>${cancel}</th>--%>
-<%--        </c:if>--%>
-<%--        <c:if test="${isAdmin == true}">--%>
-<%--            <th>${plan}</th>--%>
-<%--        </c:if>--%>
+        <c:if test="${isAdmin == true}">
+            <th>${cancel}</th>
+        </c:if>
+        <c:if test="${isAdmin == true}">
+            <th>${plan}</th>
+        </c:if>
 
     </tr>
     <c:choose>
         <c:when test="${allExhibitions.size() > 0}">
-            <c:forEach var="item" items="${allExhibitions}">
+            <c:forEach var="item" items="${page}">
                 <tr>
                     <td>${item.topic}</td>
                     <td>${item.startDate}</td>
@@ -76,19 +86,19 @@
                     <td>${item.rooms}</td>
                     <td>${item.price}</td>
                     <td>${item.state}</td>
-                    <td><form action="/buy" method="post">
+                    <td><form action="${pageContext.request.contextPath}/buy" method="post">
                         <input class="buy" type="submit" name="${item.id}" value="buy">
                     </form></td>
-<%--                    <c:if test="${isAdmin == true}">--%>
-<%--                        <td><form:form action="/cancel" method="post">--%>
-<%--                            <input class="cancel" type="submit" name="${item.id}" value="${cancel}">--%>
-<%--                        </form:form></td>--%>
-<%--                    </c:if>--%>
-<%--                    <c:if test="${isAdmin == true}">--%>
-<%--                        <td><form:form action="/plan" method="post">--%>
-<%--                            <input class="plan" type="submit" name="${item.id}" value="${plan}">--%>
-<%--                        </form:form></td>--%>
-<%--                    </c:if>--%>
+                    <c:if test="${isAdmin == true}">
+                        <td><form action="${pageContext.request.contextPath}/cancel" method="post">
+                            <input class="cancel" type="submit" name="${item.id}" value="${cancel}">
+                        </form></td>
+                    </c:if>
+                    <c:if test="${isAdmin == true}">
+                        <td><form action="${pageContext.request.contextPath}/plan" method="post">
+                            <input class="plan" type="submit" name="${item.id}" value="${plan}">
+                        </form></td>
+                    </c:if>
                 </tr>
             </c:forEach>
         </c:when>
@@ -97,5 +107,11 @@
         </c:otherwise>
     </c:choose>
 </table>
+
+<form action="${pageContext.request.contextPath}/" method="post">
+    <c:forEach var="i" begin="1" end="${pagesNumber}" step="1">
+        <input class="pages" type="submit" name="pageId" value="${i}">
+    </c:forEach>
+</form>
 </body>
 </html>

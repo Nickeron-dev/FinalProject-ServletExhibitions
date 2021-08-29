@@ -44,6 +44,8 @@ public class LoginCommand implements Command {
 
             request.getSession().setAttribute("password", user.getPassword());
             request.getSession().setAttribute("login", user.getLogin());
+            request.getSession().setAttribute("userId", user.getId());
+            request.getSession().setAttribute("email", user.getEmail());
             request.getSession().setAttribute("role", user.getRole());
 
         }

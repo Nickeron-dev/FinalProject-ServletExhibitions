@@ -2,11 +2,14 @@ package ua.project.model.dao.impl;
 
 import ua.project.model.dao.ExhibitionDao;
 import ua.project.model.dao.mapper.ExhibitionMapper;
+import ua.project.model.dao.mapper.UserMapper;
 import ua.project.model.entity.Exhibition;
+import ua.project.model.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class JDBCExhibitionDao implements ExhibitionDao {
     private final Connection connection;
@@ -48,8 +51,20 @@ public class JDBCExhibitionDao implements ExhibitionDao {
     }
 
     @Override
-    public Exhibition findById(int id) {
-        return null;
+    public Optional<Exhibition> findById(int id) {
+        Optional<Exhibition> exhibition = Optional.empty();
+        try(PreparedStatement ps = connection.prepareCall("SELECT * FROM exhibitions WHERE id = ?")){
+            ps.setInt( 1, id);
+            ResultSet rs;
+            rs = ps.executeQuery();
+            ExhibitionMapper mapper = new ExhibitionMapper();
+            if (rs.next()){
+                exhibition = Optional.of(mapper.extractFromResultSet(rs));
+            }
+        }catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
+        return exhibition;
     }
 
 
@@ -86,5 +101,71 @@ public class JDBCExhibitionDao implements ExhibitionDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void cancelById(Integer id) {
+        try(PreparedStatement ps = connection.prepareCall("UPDATE exhibitions SET state = 'CANCELED' WHERE (id = ?)")) {
+            connection.setAutoCommit(false);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ignored) {
+
+            }
+        }
+    }
+
+    @Override
+    public void planById(Integer id) {
+        try(PreparedStatement ps = connection.prepareCall("UPDATE exhibitions SET state = 'PLANNED' WHERE (id = ?)")) {
+            connection.setAutoCommit(false);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ignored) {
+
+            }
+        }
+    }
+
+    @Override
+    public List<Exhibition> allByPage(Integer page) {
+        List<Exhibition> result = new ArrayList<>();
+        try(PreparedStatement ps = connection.prepareCall("SELECT * FROM exhibitions LIMIT ?,?")) {
+            ps.setInt(1, (page - 1) * 4);
+            ps.setInt(2, 4);
+            ResultSet rs = ps.executeQuery();
+            ExhibitionMapper mapper = new ExhibitionMapper();
+            while (rs.next()) {
+                result.add(mapper.extractFromResultSet(rs));
+            }
+        }catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
+        System.out.println(result);
+        return result;
+    }
+
+    @Override
+    public Integer pagesAvailable() {
+        Integer number = 0;
+        try(PreparedStatement ps = connection.prepareCall("SELECT COUNT(*) FROM exhibitions")) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                number = rs.getInt(1);
+            }
+        }catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
+        number = (int) Math.ceil((double) number / 4);
+        System.out.println("Total pages: " + number);
+        return number;
     }
 }

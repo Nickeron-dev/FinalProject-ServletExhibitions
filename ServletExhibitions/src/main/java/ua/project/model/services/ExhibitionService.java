@@ -8,6 +8,7 @@ import ua.project.model.entity.User;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
+import java.util.Optional;
 
 public class ExhibitionService {
 
@@ -22,6 +23,36 @@ public class ExhibitionService {
     public void saveNewExhibition(Exhibition exhibition) throws SQLIntegrityConstraintViolationException {
         try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
             exhibitionDao.create(exhibition);
+        }
+    }
+
+    public Optional<Exhibition> findById(int id) {
+        try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
+            return exhibitionDao.findById(id);
+        }
+    }
+
+    public void cancelById(Integer id) {
+        try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
+            exhibitionDao.cancelById(id);
+        }
+    }
+
+    public void planById(Integer id) {
+        try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
+            exhibitionDao.planById(id);
+        }
+    }
+
+    public List<Exhibition> allByPage(Integer page) {
+        try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
+            return exhibitionDao.allByPage(page);
+        }
+    }
+
+    public Integer pagesAvailable() {
+        try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
+            return exhibitionDao.pagesAvailable();
         }
     }
 }
