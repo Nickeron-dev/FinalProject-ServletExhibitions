@@ -3,19 +3,72 @@
 <%@ page import="ua.project.model.services.ExhibitionService" %>
 <%@ page import="ua.project.model.entity.Role" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html> <!--xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"-->
 <head>
     <title>Welcome</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" accept-charset="character_set"/>
+    <style>
+        body {
+            text-align: center;
+        }
 
+        header {
+            padding-bottom: 3em;
+            background: yellow;
+        }
+
+        a {
+            float: left;
+            padding: 15px;
+            color: black;
+            font-size: 1em;
+            text-decoration: none;
+        }
+
+        a:hover {
+            background: darkkhaki;
+        }
+
+        header input {
+            float: right;
+        }
+
+        table {
+            margin-top: 0.5em;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cancel {
+            background: red;
+        }
+
+        .buy {
+            width: 100%;
+            background: green;
+        }
+
+        .plan {
+            background: yellow;
+        }
+
+        .pages {
+            overflow: visible;
+            width: auto;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 <%
     request.setAttribute("home", View.view.getBundleText(ITextsPaths.HOME));
     request.setAttribute("welcome", View.view.getBundleText(ITextsPaths.WELCOME));
+    request.setAttribute("login", View.view.getBundleText(ITextsPaths.LOGIN));
+    request.setAttribute("registration", View.view.getBundleText(ITextsPaths.REGISTER));
     request.setAttribute("role", request.getSession().getAttribute("role"));
     ExhibitionService service = new ExhibitionService();
     request.setAttribute("allExhibitions", service.findAll());
@@ -32,6 +85,8 @@
     request.setAttribute("cancel", View.view.getBundleText(ITextsPaths.CANCEL));
     request.setAttribute("plan", View.view.getBundleText(ITextsPaths.PLAN));
     request.setAttribute("noElementsFound", View.view.getBundleText(ITextsPaths.ELEMENTS_NOT_FOUND));
+    request.setAttribute("statistics", View.view.getBundleText(ITextsPaths.STATISTICS_HREF));
+    request.setAttribute("addExhibition", View.view.getBundleText(ITextsPaths.ADD_EXHIBITION_HREF));
     try {
         if (request.getSession().getAttribute("role").equals(Role.ADMIN)) {
             request.setAttribute("isAdmin", "true");
@@ -47,11 +102,15 @@
         <input type="submit" name="ukr" value="UKR">
         <input type="submit" name="eng" value="ENG">
     </form>
-    <a href="${pageContext.request.contextPath}/login">login</a>
-    <a href="${pageContext.request.contextPath}/registration">registration</a>
-    <p>Current Role: ${role}</p>
-
     <a href="${pageContext.request.contextPath}/">${home}</a>
+    <a href="${pageContext.request.contextPath}/login">${login}</a>
+    <a href="${pageContext.request.contextPath}/registration">${registration}</a>
+    <c:if test="${isAdmin == true}">
+        <a href="${pageContext.request.contextPath}/statistics">${statistics}</a>
+        <a href="${pageContext.request.contextPath}/addExhibition">${addExhibition}</a>
+    </c:if>
+
+
 </header>
 <h1>${welcome}</h1>
 
@@ -87,7 +146,7 @@
                     <td>${item.price}</td>
                     <td>${item.state}</td>
                     <td><form action="${pageContext.request.contextPath}/buy" method="post">
-                        <input class="buy" type="submit" name="${item.id}" value="buy">
+                        <input class="buy" type="submit" name="${item.id}" value="${buy}">
                     </form></td>
                     <c:if test="${isAdmin == true}">
                         <td><form action="${pageContext.request.contextPath}/cancel" method="post">

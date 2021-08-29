@@ -6,7 +6,13 @@ import ua.project.model.entity.ExhibitionState;
 import ua.project.model.services.ExhibitionService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Arrays;
+import java.util.Base64;
 
 public class AddExhibitionCommand implements Command {
     @Override
@@ -20,27 +26,12 @@ public class AddExhibitionCommand implements Command {
                     Configurer.getTimeFromString(request.getParameter("startTime")),
                     Configurer.getTimeFromString(request.getParameter("endTime")),
                     Integer.parseInt(request.getParameter("price")), ExhibitionState.PLANNED);
-            request.getSession().setAttribute("justFromExhibition", "true");
             service.saveNewExhibition(exhibition);
-            request.removeAttribute("justFromExhibition");
         } catch (SQLIntegrityConstraintViolationException exc) {
-            System.out.println("Added");
-            if (request.getHeader("referer").contains("addExhibition")) {
-                request.setAttribute("errorMessage", "Inserted data is invalid!");
-            }
+
 
         } catch (NullPointerException | NumberFormatException exc) {
-            try {
-                System.out.println("Here");
-                request.getSession().getAttribute("justFromExhibition").equals("true");
-                request.setAttribute("errorMessage", "Inserted data is invalid!");
-            } catch (NullPointerException e) {
-                try {
-                    request.removeAttribute("errorMessage");
-                } catch (NullPointerException ignored) {
-                    request.removeAttribute("justFromExhibition");
-                }
-            }
+
         }
         return "WEB-INF/view/addExhibition.jsp";
     }

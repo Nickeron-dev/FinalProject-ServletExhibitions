@@ -12,11 +12,46 @@
     <meta content="text/html">
     <title>Statistics</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/statistics.css" type="text/css">
+    <style>
+        body {
+            text-align: center;
+        }
+
+        header {
+            padding-bottom: 3em;
+            background: yellow;
+        }
+
+        a {
+            float: left;
+            padding: 15px;
+            color: black;
+            font-size: 1em;
+            text-decoration: none;
+        }
+
+        a:hover {
+            background: darkkhaki;
+        }
+
+        header input {
+            float: right;
+        }
+
+        table {
+            margin-top: 0.5em;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
 </head>
 <%
     request.setAttribute("home", View.view.getBundleText(ITextsPaths.HOME));
-    request.setAttribute("welcome", View.view.getBundleText(ITextsPaths.WELCOME));
-    request.setAttribute("role", request.getSession().getAttribute("role"));
+
+    request.setAttribute("login", View.view.getBundleText(ITextsPaths.LOGIN));
+    request.setAttribute("registration", View.view.getBundleText(ITextsPaths.REGISTER));
+    request.setAttribute("addExhibition", View.view.getBundleText(ITextsPaths.ADD_EXHIBITION_HREF));
+
     request.setAttribute("topic", View.view.getBundleText(ITextsPaths.TOPIC));
     request.setAttribute("startDate", View.view.getBundleText(ITextsPaths.START_DATE));
     request.setAttribute("endDate", View.view.getBundleText(ITextsPaths.END_DATE));
@@ -38,8 +73,10 @@
         <input type="submit" name="ukr" value="UKR">
         <input type="submit" name="eng" value="ENG">
     </form>
-    <a href="${pageContext.request.contextPath}/login">login</a>
-    <a href="${pageContext.request.contextPath}/registration">registration</a>
+    <a href="${pageContext.request.contextPath}/">${home}</a>
+    <a href="${pageContext.request.contextPath}/login">${login}</a>
+    <a href="${pageContext.request.contextPath}/registration">${registration}</a>
+    <a href="${pageContext.request.contextPath}/addExhibition">${addExhibition}</a>
 </header>
 
 

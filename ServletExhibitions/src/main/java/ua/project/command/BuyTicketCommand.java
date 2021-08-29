@@ -33,8 +33,6 @@ public class BuyTicketCommand implements Command {
             e.printStackTrace();
         }
         catch (NullPointerException exc) {
-            exc.printStackTrace();
-            System.out.println("caught 1");
             try {
                 if (request.getSession().getAttribute("role").equals(Role.ADMIN)
                         || request.getSession().getAttribute("role").equals(Role.USER)) {

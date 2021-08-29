@@ -12,7 +12,7 @@ public class ConnectionPoolHolder {
             synchronized (ConnectionPoolHolder.class) {
                 if (dataSource == null) {
                     BasicDataSource ds = new BasicDataSource();
-                    ds.setUrl("jdbc:mysql://localhost:3306/servletexhibitions");
+                    ds.setUrl("jdbc:mysql://localhost:3306/servletexhibitions?useUnicode=yes&characterEncoding=UTF-8");
                     ds.setUsername("root");
                     ds.setPassword("trumpet");
                     ds.setDriverClassName("com.mysql.cj.jdbc.Driver");

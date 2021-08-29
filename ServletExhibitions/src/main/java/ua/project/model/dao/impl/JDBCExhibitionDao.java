@@ -24,6 +24,7 @@ public class JDBCExhibitionDao implements ExhibitionDao {
         try(PreparedStatement ps = connection.prepareCall("INSERT INTO exhibitions (topic, startDate, endDate, startTime, endTime, rooms, price, state)" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
             connection.setAutoCommit(false);
+            System.out.println(entity.getTopic());
             ps.setString(1, entity.getTopic());
             ps.setString(2, entity.getStartDate().toString());
             ps.setString(3, entity.getEndDate().toString());
