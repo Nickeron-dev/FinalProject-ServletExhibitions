@@ -27,6 +27,7 @@ public class Servlet extends HttpServlet {
         commands.put("statistics", new StatisticsCommand());
         commands.put("cancel", new CancelExhibitionCommand());
         commands.put("plan", new PlanExhibitionCommand());
+        commands.put("filter", new FilterByDateCommand());
     }
 
     public void doGet(HttpServletRequest request,

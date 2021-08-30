@@ -1,14 +1,16 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="ua.project.view.View" %>
 <%@ page import="ua.project.view.ITextsPaths" %>
 <%@ page import="ua.project.model.services.ExhibitionService" %>
 <%@ page import="ua.project.model.entity.Role" %>
 <%@ page import="java.time.LocalDate" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<html> <!--xmlns="http://www.w3.org/1999/xhtml"
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"-->
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 <head>
     <title>Welcome</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" accept-charset="UTF-8"/>
@@ -72,7 +74,6 @@
     request.setAttribute("registration", View.view.getBundleText(ITextsPaths.REGISTER));
     request.setAttribute("role", request.getSession().getAttribute("role"));
     ExhibitionService service = new ExhibitionService();
-    request.setAttribute("allExhibitions", service.findAll());
     request.setAttribute("topic", View.view.getBundleText(ITextsPaths.TOPIC));
     request.setAttribute("startDate", View.view.getBundleText(ITextsPaths.START_DATE));
     request.setAttribute("endDate", View.view.getBundleText(ITextsPaths.END_DATE));
@@ -144,8 +145,8 @@
 
     </tr>
     <c:choose>
-        <c:when test="${allExhibitions.size() > 0}">
-            <c:forEach var="item" items="${page}">
+        <c:when test="${filteredList.size() > 0}">
+            <c:forEach var="item" items="${filteredList}">
                 <tr>
                     <td>${item.topic}</td>
                     <td>${item.startDate}</td>
@@ -177,10 +178,5 @@
     </c:choose>
 </table>
 
-<form action="${pageContext.request.contextPath}/" method="post">
-    <c:forEach var="i" begin="1" end="${pagesNumber}" step="1">
-        <input class="pages" type="submit" name="pageId" value="${i}">
-    </c:forEach>
-</form>
 </body>
 </html>

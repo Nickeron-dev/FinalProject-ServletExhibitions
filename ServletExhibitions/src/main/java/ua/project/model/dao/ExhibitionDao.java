@@ -2,6 +2,7 @@ package ua.project.model.dao;
 
 import ua.project.model.entity.Exhibition;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ExhibitionDao extends GenericDao<Exhibition> {
@@ -9,4 +10,5 @@ public interface ExhibitionDao extends GenericDao<Exhibition> {
     void planById(Integer id);
     List<Exhibition> allByPage(Integer page);
     Integer pagesAvailable();
+    List<Exhibition> filterByDate(LocalDate date);
 }

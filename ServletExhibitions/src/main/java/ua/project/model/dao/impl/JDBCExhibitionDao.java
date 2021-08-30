@@ -7,6 +7,7 @@ import ua.project.model.entity.Exhibition;
 import ua.project.model.entity.User;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -168,5 +169,22 @@ public class JDBCExhibitionDao implements ExhibitionDao {
         number = (int) Math.ceil((double) number / 4);
         System.out.println("Total pages: " + number);
         return number;
+    }
+
+    @Override
+    public List<Exhibition> filterByDate(LocalDate date) {
+        List<Exhibition> result = new ArrayList<>();
+        try(PreparedStatement ps = connection.prepareCall("SELECT * FROM exhibitions WHERE endDate >= ?")){
+            ps.setString(1, date.toString());
+            ResultSet rs = ps.executeQuery();
+            ExhibitionMapper mapper = new ExhibitionMapper();
+            while (rs.next()) {
+                result.add(mapper.extractFromResultSet(rs));
+            }
+        }catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
+        System.out.println(result);
+        return result;
     }
 }

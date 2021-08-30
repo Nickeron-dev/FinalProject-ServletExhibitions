@@ -7,6 +7,7 @@ import ua.project.model.entity.Exhibition;
 import ua.project.model.entity.User;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +54,12 @@ public class ExhibitionService {
     public Integer pagesAvailable() {
         try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
             return exhibitionDao.pagesAvailable();
+        }
+    }
+
+    public List<Exhibition> filterByDate(LocalDate date) {
+        try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
+            return exhibitionDao.filterByDate(date);
         }
     }
 }
