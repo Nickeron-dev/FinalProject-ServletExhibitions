@@ -1,13 +1,9 @@
 package ua.project.servlets.listeners;
 
 import ua.project.model.services.ExhibitionService;
-import ua.project.view.ILocaleNames;
-import ua.project.view.View;
 
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
-import java.util.Locale;
-import java.util.Optional;
 
 public class PageListener implements ServletRequestListener {
 

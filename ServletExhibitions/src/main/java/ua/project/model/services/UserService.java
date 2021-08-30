@@ -4,7 +4,6 @@ import ua.project.model.dao.DaoFactory;
 import ua.project.model.dao.UserDao;
 import ua.project.model.entity.User;
 
-import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Optional;
 

@@ -1,16 +1,10 @@
 package ua.project.servlets.filters;
 
 import ua.project.model.entity.Role;
-import ua.project.model.entity.User;
-import ua.project.model.services.UserService;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-
-import static java.util.Objects.nonNull;
 
 /**
  * Acidification filter.
@@ -18,7 +12,7 @@ import static java.util.Objects.nonNull;
 public class AuthFilter implements Filter {
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
     }
 
     @Override
@@ -37,7 +31,7 @@ public class AuthFilter implements Filter {
                 request.getSession().setAttribute("role", request.getSession().getAttribute("role"));
                 servletResponse.getWriter().append("You are already logged in!");
             }
-        } catch (NullPointerException exc) {
+        } catch (NullPointerException ignored) {
 
         }
         
@@ -47,10 +41,8 @@ public class AuthFilter implements Filter {
                     filterChain.doFilter(servletRequest,servletResponse);
                 }else{
                     servletResponse.getWriter().append("AccessDenied");
-                    return;
                 }
             } catch (NullPointerException ignored) {
-                ignored.printStackTrace();
             }
 
         } else {

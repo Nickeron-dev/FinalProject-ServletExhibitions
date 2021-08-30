@@ -1,10 +1,9 @@
 package ua.project.model.dao.impl;
 
+import ua.project.containers.SQLStatements;
 import ua.project.model.dao.ExhibitionDao;
 import ua.project.model.dao.mapper.ExhibitionMapper;
-import ua.project.model.dao.mapper.UserMapper;
 import ua.project.model.entity.Exhibition;
-import ua.project.model.entity.User;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -22,8 +21,7 @@ public class JDBCExhibitionDao implements ExhibitionDao {
 
     @Override
     public void create(Exhibition entity) throws SQLIntegrityConstraintViolationException {
-        try(PreparedStatement ps = connection.prepareCall("INSERT INTO exhibitions (topic, startDate, endDate, startTime, endTime, rooms, price, state)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
+        try(PreparedStatement ps = connection.prepareCall(SQLStatements.CREATE_EXHIBITION)) {
             connection.setAutoCommit(false);
             System.out.println(entity.getTopic());
             ps.setString(1, entity.getTopic());
@@ -55,7 +53,7 @@ public class JDBCExhibitionDao implements ExhibitionDao {
     @Override
     public Optional<Exhibition> findById(int id) {
         Optional<Exhibition> exhibition = Optional.empty();
-        try(PreparedStatement ps = connection.prepareCall("SELECT * FROM exhibitions WHERE id = ?")){
+        try(PreparedStatement ps = connection.prepareCall(SQLStatements.FIND_EXHIBITION_BY_ID)){
             ps.setInt( 1, id);
             ResultSet rs;
             rs = ps.executeQuery();
@@ -74,7 +72,7 @@ public class JDBCExhibitionDao implements ExhibitionDao {
     @Override
     public List<Exhibition> findAll() {
         List<Exhibition> result = new ArrayList<>();
-        try(PreparedStatement ps = connection.prepareCall("SELECT * FROM exhibitions")){
+        try(PreparedStatement ps = connection.prepareCall(SQLStatements.FIND_ALL_EXHIBITIONS)){
             ResultSet rs = ps.executeQuery();
             ExhibitionMapper mapper = new ExhibitionMapper();
             while (rs.next()) {
@@ -84,16 +82,6 @@ public class JDBCExhibitionDao implements ExhibitionDao {
             throw new RuntimeException(ex);
         }
         return result;
-    }
-
-    @Override
-    public void update(Exhibition entity) {
-
-    }
-
-    @Override
-    public void delete(int id) {
-
     }
 
     @Override
@@ -107,7 +95,7 @@ public class JDBCExhibitionDao implements ExhibitionDao {
 
     @Override
     public void cancelById(Integer id) {
-        try(PreparedStatement ps = connection.prepareCall("UPDATE exhibitions SET state = 'CANCELED' WHERE (id = ?)")) {
+        try(PreparedStatement ps = connection.prepareCall(SQLStatements.CANCEL_BY_ID)) {
             connection.setAutoCommit(false);
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -123,7 +111,7 @@ public class JDBCExhibitionDao implements ExhibitionDao {
 
     @Override
     public void planById(Integer id) {
-        try(PreparedStatement ps = connection.prepareCall("UPDATE exhibitions SET state = 'PLANNED' WHERE (id = ?)")) {
+        try(PreparedStatement ps = connection.prepareCall(SQLStatements.PLAN_BY_ID)) {
             connection.setAutoCommit(false);
             ps.setInt(1, id);
             ps.executeUpdate();
@@ -140,7 +128,7 @@ public class JDBCExhibitionDao implements ExhibitionDao {
     @Override
     public List<Exhibition> allByPage(Integer page) {
         List<Exhibition> result = new ArrayList<>();
-        try(PreparedStatement ps = connection.prepareCall("SELECT * FROM exhibitions LIMIT ?,?")) {
+        try(PreparedStatement ps = connection.prepareCall(SQLStatements.FIND_BY_PAGE)) {
             ps.setInt(1, (page - 1) * 4);
             ps.setInt(2, 4);
             ResultSet rs = ps.executeQuery();
@@ -157,8 +145,8 @@ public class JDBCExhibitionDao implements ExhibitionDao {
 
     @Override
     public Integer pagesAvailable() {
-        Integer number = 0;
-        try(PreparedStatement ps = connection.prepareCall("SELECT COUNT(*) FROM exhibitions")) {
+        int number = 0;
+        try(PreparedStatement ps = connection.prepareCall(SQLStatements.PAGES_AVAILABLE)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 number = rs.getInt(1);
@@ -174,7 +162,7 @@ public class JDBCExhibitionDao implements ExhibitionDao {
     @Override
     public List<Exhibition> filterByDate(LocalDate date) {
         List<Exhibition> result = new ArrayList<>();
-        try(PreparedStatement ps = connection.prepareCall("SELECT * FROM exhibitions WHERE endDate >= ?")){
+        try(PreparedStatement ps = connection.prepareCall(SQLStatements.FILTER_BY_DATE)){
             ps.setString(1, date.toString());
             ResultSet rs = ps.executeQuery();
             ExhibitionMapper mapper = new ExhibitionMapper();

@@ -2,9 +2,7 @@ package ua.project.model.services;
 
 import ua.project.model.dao.DaoFactory;
 import ua.project.model.dao.ExhibitionDao;
-import ua.project.model.dao.UserDao;
 import ua.project.model.entity.Exhibition;
-import ua.project.model.entity.User;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;

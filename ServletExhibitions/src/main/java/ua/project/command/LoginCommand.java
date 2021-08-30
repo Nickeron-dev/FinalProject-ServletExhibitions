@@ -4,14 +4,8 @@ import ua.project.model.entity.Role;
 import ua.project.model.entity.User;
 import ua.project.model.services.UserService;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 import static java.util.Objects.nonNull;
 
@@ -29,7 +23,7 @@ public class LoginCommand implements Command {
                     && request.getHeader("referer").contains("login")) {
                 return "/WEB-INF/index.jsp";
             }
-        } catch (NullPointerException exc) {
+        } catch (NullPointerException ignored) {
 
         }
         if (nonNull(session) &&

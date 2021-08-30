@@ -1,11 +1,12 @@
 package ua.project.model.dao.impl;
 
+import ua.project.containers.SQLStatements;
 import ua.project.model.dao.TicketDao;
-import ua.project.model.dao.mapper.UserMapper;
+import ua.project.model.dao.mapper.TicketMapper;
 import ua.project.model.entity.Ticket;
-import ua.project.model.entity.User;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +19,7 @@ public class JDBCTicketDao implements TicketDao {
 
     @Override
     public void create(Ticket entity) throws SQLIntegrityConstraintViolationException {
-        try(PreparedStatement ps = connection.prepareCall("INSERT INTO tickets (exhibitionTopic, exhibitionId, userEmail, userId)" +
-                " VALUES (?, ?, ?, ?); ")) {
+        try(PreparedStatement ps = connection.prepareCall(SQLStatements.CREATE_TICKET)) {
             connection.setAutoCommit(false);
             ps.setString(1, entity.getExhibitionTopic());
             ps.setInt(2, entity.getExhibitionId());
@@ -45,33 +45,49 @@ public class JDBCTicketDao implements TicketDao {
 
     @Override
     public Optional<Ticket> findById(int id) {
-        return null;
+        Optional<Ticket> ticket = Optional.empty();
+        try(PreparedStatement ps = connection.prepareCall(SQLStatements.FIND_TICKET_BY_ID)){
+            ps.setInt( 1, id);
+            ResultSet rs;
+            rs = ps.executeQuery();
+            TicketMapper mapper = new TicketMapper();
+            if (rs.next()){
+                ticket = Optional.of(mapper.extractFromResultSet(rs));
+            }
+        }catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
+        return ticket;
     }
 
     @Override
     public List<Ticket> findAll() {
-        return null;
-    }
-
-    @Override
-    public void update(Ticket entity) {
-
-    }
-
-    @Override
-    public void delete(int id) {
-
+        List<Ticket> result = new ArrayList<>();
+        try(PreparedStatement ps = connection.prepareCall(SQLStatements.FIND_ALL_TICKETS)){
+            ResultSet rs = ps.executeQuery();
+            TicketMapper mapper = new TicketMapper();
+            while (rs.next()) {
+                result.add(mapper.extractFromResultSet(rs));
+            }
+        }catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
+        return result;
     }
 
     @Override
     public void close() {
-
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public long countByExhibitionId(Integer exhibitionId) {
         long amount = 0;
-        try(PreparedStatement ps = connection.prepareCall("SELECT COUNT(*) FROM tickets WHERE exhibitionId = ?")){
+        try(PreparedStatement ps = connection.prepareCall(SQLStatements.COUNT_BY_EXHIBITION_ID)){
             ps.setInt( 1, exhibitionId);
             ResultSet rs;
             rs = ps.executeQuery();

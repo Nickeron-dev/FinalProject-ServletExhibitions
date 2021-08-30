@@ -1,9 +1,7 @@
 package ua.project.model.services;
 
 import ua.project.model.dao.DaoFactory;
-import ua.project.model.dao.ExhibitionDao;
 import ua.project.model.dao.TicketDao;
-import ua.project.model.entity.Exhibition;
 import ua.project.model.entity.Ticket;
 
 import java.sql.SQLIntegrityConstraintViolationException;

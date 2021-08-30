@@ -18,9 +18,14 @@ public class StatisticsCommand implements Command {
 
         List<ExhibitionWithVisitorAmount> statistics = new ArrayList<>();
         List<Exhibition> all = exhibitionService.findAll();
+        System.out.println("All materials taken");
+        System.out.println("statistics empty: " + statistics);
+
         all.forEach(element -> statistics.add(new ExhibitionWithVisitorAmount(element,
                 (int) ticketService.countByExhibitionId(element.getId()))));
         request.setAttribute("statistics", statistics);
+        System.out.println("statistics attribute was set");
+        System.out.println(statistics);
 
         return "WEB-INF/view/statistics.jsp";
     }

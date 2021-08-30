@@ -1,10 +1,12 @@
 package ua.project.model.dao.impl;
 
+import ua.project.containers.SQLStatements;
 import ua.project.model.dao.UserDao;
 import ua.project.model.dao.mapper.UserMapper;
 import ua.project.model.entity.User;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +20,7 @@ public class JDBCUserDao implements UserDao {
 
     @Override
     public void create(User entity) throws SQLIntegrityConstraintViolationException {
-        try(PreparedStatement ps = connection.prepareCall("INSERT INTO users (username, password, email, role)" +
-                " VALUES (?, ?, ?, ?); ")) {
+        try(PreparedStatement ps = connection.prepareCall(SQLStatements.CREATE_USER)) {
             connection.setAutoCommit(false);
             ps.setString(1, entity.getLogin());
             ps.setString(2, entity.getPassword());
@@ -44,25 +45,37 @@ public class JDBCUserDao implements UserDao {
     }
 
     @Override
-    public Optional<User>findById(int id) {
-        return null;
+    public Optional<User> findById(int id) {
+        Optional<User> user = Optional.empty();
+        try(PreparedStatement ps = connection.prepareCall(SQLStatements.FIND_USER_BY_ID)){
+            ps.setInt( 1, id);
+            ResultSet rs;
+            rs = ps.executeQuery();
+            UserMapper mapper = new UserMapper();
+            if (rs.next()){
+                user = Optional.of(mapper.extractFromResultSet(rs));
+            }
+        }catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
+        return user;
     }
 
 
 
     @Override
     public List<User> findAll() {
-        return null;
-    }
-
-    @Override
-    public void update(User entity) {
-
-    }
-
-    @Override
-    public void delete(int id) {
-
+        List<User> result = new ArrayList<>();
+        try(PreparedStatement ps = connection.prepareCall(SQLStatements.FIND_ALL_USERS)){
+            ResultSet rs = ps.executeQuery();
+            UserMapper mapper = new UserMapper();
+            while (rs.next()) {
+                result.add(mapper.extractFromResultSet(rs));
+            }
+        }catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
+        return result;
     }
 
     @Override
@@ -78,7 +91,7 @@ public class JDBCUserDao implements UserDao {
     public Optional<User> findByName(String name) {
 
         Optional<User> result = Optional.empty();
-        try(PreparedStatement ps = connection.prepareCall("SELECT * FROM users WHERE username = ?")){
+        try(PreparedStatement ps = connection.prepareCall(SQLStatements.FIND_USER_BY_NAME)){
             ps.setString( 1, name);
             ResultSet rs;
             rs = ps.executeQuery();
