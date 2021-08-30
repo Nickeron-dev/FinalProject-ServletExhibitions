@@ -46,4 +46,6 @@ public interface ITextsPaths {
 
     String BUY_TICKET_SUCCESS = "buy.ticket.success";
     String LOG_IN_REQUEST = "log.in.request";
+
+    String ERROR_PAGE_MESSAGE = "error.page.message";
 }

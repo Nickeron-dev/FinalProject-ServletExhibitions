@@ -10,7 +10,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"-->
 <head>
     <title>Welcome</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" accept-charset="character_set"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" accept-charset="UTF-8"/>
     <style>
         body {
             text-align: center;
