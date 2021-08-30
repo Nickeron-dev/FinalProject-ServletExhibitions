@@ -38,6 +38,14 @@
             float: right;
         }
 
+        div {
+            margin-right: auto;
+            margin-left: auto;
+            width: 200px;
+            border: aqua;
+            height: 500px;
+        }
+
     </style>
 </head>
 <body>
@@ -67,10 +75,11 @@
     <a href="${pageContext.request.contextPath}/registration">${registration}</a>
     <a href="${pageContext.request.contextPath}/statistics">${statistics}</a>
 </header>
-<h2>${errorMessage}</h2>
+<h1>${addExhibition}</h1>
+<h3>${errorMessage}</h3>
 <div class="form">
 
-    <h1>${addExhibition}</h1><br>
+
     <form method="post" action="" accept-charset="utf-8">
 
         <label>${topic}
