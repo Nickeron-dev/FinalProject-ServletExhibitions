@@ -48,6 +48,7 @@ public interface ITextsPaths {
     String LOG_IN_REQUEST = "log.in.request";
 
     String ERROR_PAGE_MESSAGE = "error.page.message";
+    String EXHIBITION_ADDING_SUCCESS = "addition.exhibition.success";
     String INVALID_DATA = "addition.exhibition.error";
 
     String FILTER_BY_DATE = "filtering.filter.by.date";
