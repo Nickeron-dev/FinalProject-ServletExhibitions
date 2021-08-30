@@ -3,6 +3,8 @@ package ua.project.command;
 import ua.project.model.entity.Role;
 import ua.project.model.entity.User;
 import ua.project.model.services.UserService;
+import ua.project.view.ITextsPaths;
+import ua.project.view.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,6 +19,11 @@ public class LoginCommand implements Command {
         final UserService userService = new UserService();
         Role role = Role.GUEST;
         final HttpSession session = request.getSession();
+        try {
+            request.removeAttribute("errorMessage");
+        } catch (NullPointerException ignored) {
+
+        }
         try {
             if ((session.getAttribute("role").equals(Role.ADMIN)
                             || session.getAttribute("role").equals(Role.USER))
@@ -34,14 +41,23 @@ public class LoginCommand implements Command {
 
         } else if (userService.login(request.getParameter("login")).isPresent()) {
             User user = userService.login(request.getParameter("login")).get();
-            role = user.getRole();
+            if (user.getPassword().equals(request.getParameter("password"))) {
+                role = user.getRole();
 
-            request.getSession().setAttribute("password", user.getPassword());
-            request.getSession().setAttribute("login", user.getLogin());
-            request.getSession().setAttribute("userId", user.getId());
-            request.getSession().setAttribute("email", user.getEmail());
-            request.getSession().setAttribute("role", user.getRole());
-
+                request.getSession().setAttribute("password", user.getPassword());
+                request.getSession().setAttribute("login", user.getLogin());
+                request.getSession().setAttribute("userId", user.getId());
+                request.getSession().setAttribute("email", user.getEmail());
+                request.getSession().setAttribute("role", user.getRole());
+            } else {
+                if (request.getHeader("referer").contains("login")) {
+                    request.setAttribute("errorMessage", View.view.getBundleText(ITextsPaths.INVALID_DATA));
+                }
+            }
+        } else {
+            if (request.getHeader("referer").contains("login")) {
+                request.setAttribute("errorMessage", View.view.getBundleText(ITextsPaths.INVALID_DATA));
+            }
         }
         if (role.equals(Role.ADMIN)) {
 

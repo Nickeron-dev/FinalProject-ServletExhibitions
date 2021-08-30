@@ -99,8 +99,8 @@ public class JDBCUserDao implements UserDao {
             if (rs.next()){
                 result = Optional.of(mapper.extractFromResultSet(rs));
             }
-        }catch (Exception ex){
-            throw new RuntimeException(ex);
+        }catch (SQLException ex){
+            ex.printStackTrace();
         }
         return result;
     }

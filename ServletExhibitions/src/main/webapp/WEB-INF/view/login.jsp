@@ -50,6 +50,7 @@
     <a href="${pageContext.request.contextPath}/registration">${registration}</a>
 
 </header>
+<h2>${errorMessage}</h2>
     <div class="form">
 
         <h1>${login}</h1><br>
