@@ -25,6 +25,9 @@ public class RegistrationCommand implements Command {
                     throw new IllegalArgumentException();
                 }
             service.saveNewUser(user);
+            if (request.getHeader("referer").contains("registration")) {
+                request.setAttribute("errorMessage", View.view.getBundleText(ITextsPaths.REGISTER_SUCCESS));
+            }
         } catch (SQLIntegrityConstraintViolationException | IllegalArgumentException exc) {
 
             if (request.getHeader("referer").contains("registration")) {
