@@ -1,5 +1,7 @@
 package ua.project.command;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ua.project.model.entity.Role;
 import ua.project.model.entity.User;
 import ua.project.model.services.UserService;
@@ -11,12 +13,11 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.regex.Pattern;
 
 public class RegistrationCommand implements Command {
-
+    static Logger logger = LogManager.getLogger(RegistrationCommand.class);
     @Override
     public String execute(HttpServletRequest request) {
         UserService service = new UserService();
         try {
-
             User user = new User(request.getParameter("username"),
                     request.getParameter("password"), request.getParameter("email"), Role.USER);
                 if ( ! (Pattern.compile(View.view.getBundleText(ITextsPaths.EMAIL_REGEX)).matcher(user.getEmail()).matches()
@@ -25,11 +26,12 @@ public class RegistrationCommand implements Command {
                     throw new IllegalArgumentException();
                 }
             service.saveNewUser(user);
+            logger.info("New user was saved");
             if (request.getHeader("referer").contains("registration")) {
                 request.setAttribute("errorMessage", View.view.getBundleText(ITextsPaths.REGISTER_SUCCESS));
             }
         } catch (SQLIntegrityConstraintViolationException | IllegalArgumentException exc) {
-
+            logger.info("Invalid data was inserted");
             if (request.getHeader("referer").contains("registration")) {
                 request.setAttribute("errorMessage", View.view.getBundleText(ITextsPaths.INVALID_DATA));
             }
@@ -38,7 +40,6 @@ public class RegistrationCommand implements Command {
             try {
                 request.removeAttribute("errorMessage");
             } catch (NullPointerException ignored) {
-
             }
         }
 

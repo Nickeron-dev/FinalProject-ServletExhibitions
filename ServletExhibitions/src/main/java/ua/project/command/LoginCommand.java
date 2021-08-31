@@ -17,14 +17,12 @@ public class LoginCommand implements Command {
     static Logger logger = LogManager.getLogger(LoginCommand.class);
     @Override
     public String execute(HttpServletRequest request) {
-
         final UserService userService = new UserService();
         Role role = Role.GUEST;
         final HttpSession session = request.getSession();
         try {
             request.removeAttribute("errorMessage");
         } catch (NullPointerException ignored) {
-
         }
         try {
             if ((session.getAttribute("role").equals(Role.ADMIN)
@@ -34,7 +32,6 @@ public class LoginCommand implements Command {
                 return "/WEB-INF/index.jsp";
             }
         } catch (NullPointerException ignored) {
-
         }
         if (nonNull(session) &&
                 nonNull(session.getAttribute("login")) &&
@@ -52,7 +49,7 @@ public class LoginCommand implements Command {
                 request.getSession().setAttribute("userId", user.getId());
                 request.getSession().setAttribute("email", user.getEmail());
                 request.getSession().setAttribute("role", user.getRole());
-                logger.info("Logged in user");
+                logger.info("User logged in");
             } else {
                 if (request.getHeader("referer").contains("login")) {
                     request.setAttribute("errorMessage", View.view.getBundleText(ITextsPaths.INVALID_DATA));
@@ -66,15 +63,12 @@ public class LoginCommand implements Command {
             }
         }
         if (role.equals(Role.ADMIN)) {
-
             return "/WEB-INF/view/admin_menu.jsp";
 
         } else if (role.equals(Role.USER)) {
-
             return "/WEB-INF/view/user_menu.jsp";
 
         } else {
-
             return "/WEB-INF/view/login.jsp";
         }
     }

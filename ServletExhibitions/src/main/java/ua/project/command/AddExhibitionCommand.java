@@ -35,7 +35,7 @@ public class AddExhibitionCommand implements Command {
             if (request.getHeader("referer").contains("addExhibition")) {
                 request.setAttribute("errorMessage", View.view.getBundleText(ITextsPaths.INVALID_DATA));
             }
-            logger.info("Invalid data was inserted, new Exhibition was not created");
+            logger.info("Page was just opened or invalid data was inserted, new Exhibition was not created");
 
         } catch (NullPointerException exc) {
             try {
