@@ -13,7 +13,6 @@ public class LogoutCommand implements Command {
         session.removeAttribute("login");
         session.removeAttribute("role");
         CommandUtility.setUserRole(request, Role.GUEST, "Guest");
-        System.out.println(request.getContextPath());
         return  "/WEB-INF/index.jsp";
     }
 }

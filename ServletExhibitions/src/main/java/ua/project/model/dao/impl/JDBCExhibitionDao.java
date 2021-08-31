@@ -23,7 +23,6 @@ public class JDBCExhibitionDao implements ExhibitionDao {
     public void create(Exhibition entity) throws SQLIntegrityConstraintViolationException {
         try(PreparedStatement ps = connection.prepareCall(SQLStatements.CREATE_EXHIBITION)) {
             connection.setAutoCommit(false);
-            System.out.println(entity.getTopic());
             ps.setString(1, entity.getTopic());
             ps.setString(2, entity.getStartDate().toString());
             ps.setString(3, entity.getEndDate().toString());
@@ -139,7 +138,6 @@ public class JDBCExhibitionDao implements ExhibitionDao {
         }catch (Exception ex){
             throw new RuntimeException(ex);
         }
-        System.out.println(result);
         return result;
     }
 
@@ -155,7 +153,6 @@ public class JDBCExhibitionDao implements ExhibitionDao {
             throw new RuntimeException(ex);
         }
         number = (int) Math.ceil((double) number / 4);
-        System.out.println("Total pages: " + number);
         return number;
     }
 
@@ -172,7 +169,6 @@ public class JDBCExhibitionDao implements ExhibitionDao {
         }catch (Exception ex){
             throw new RuntimeException(ex);
         }
-        System.out.println(result);
         return result;
     }
 }

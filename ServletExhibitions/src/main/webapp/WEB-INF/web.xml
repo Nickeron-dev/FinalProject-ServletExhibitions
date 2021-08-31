@@ -59,5 +59,8 @@
         <location>/WEB-INF/error.jsp</location>
     </error-page>
 
-
+    <context-param>
+        <param-name>log4jConfiguration</param-name>
+        <param-value>file:///C:\Users\koshk\Documents\git\FinalProject-ServletExhibitions\ServletExhibitions\src\main\webapp\WEB-INF\classes\Log4j2.xml</param-value>
+    </context-param>
 </web-app>
