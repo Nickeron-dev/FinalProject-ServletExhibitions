@@ -1,7 +1,7 @@
 ### Intellij ###
 
-# User-specific stuff
 .idea/
+*.iml
 
 # mvnw files
 mvnw
@@ -20,12 +20,6 @@ out/
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
-### Intellij Patch ###
-
-*.iml
-# modules.xml
-# .idea/misc.xml
-# *.ipr
 
 # Cache file creation bug
 .idea/$CACHE_FILE$
