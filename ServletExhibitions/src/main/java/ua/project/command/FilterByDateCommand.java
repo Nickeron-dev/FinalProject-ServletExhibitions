@@ -8,17 +8,8 @@ import ua.project.model.services.ExhibitionService;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 
-/**
- * @author Illia Koshkin
- */
 public class FilterByDateCommand implements Command {
     static Logger logger = LogManager.getLogger(FilterByDateCommand.class);
-
-    /**
-     * Filters all exhibitions by given date
-     * @param request HttpServletRequest object is necessary to complete the operation
-     * @return Jsp page with filtered exhibitions
-     */
     @Override
     public String execute(HttpServletRequest request) {
 

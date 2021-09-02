@@ -10,17 +10,8 @@ import ua.project.model.services.TicketService;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLIntegrityConstraintViolationException;
 
-/**
- * @author Illia Koshkin
- */
 public class BuyTicketCommand implements Command {
     static Logger logger = LogManager.getLogger(AddExhibitionCommand.class);
-
-    /**
-     * This command accomplishes buying a ticket
-     * @param request HttpServletRequest object is necessary to complete the operation
-     * @return result jsp page of buying a ticket
-     */
     @Override
     public String execute(HttpServletRequest request) {
         final TicketService service = new TicketService();
