@@ -13,8 +13,17 @@ import javax.servlet.http.HttpSession;
 
 import static java.util.Objects.nonNull;
 
+/**
+ * @author Illia Koshkin
+ */
 public class LoginCommand implements Command {
     static Logger logger = LogManager.getLogger(LoginCommand.class);
+
+    /**
+     * Allows to sign in provided that user has an account
+     * @param request HttpServletRequest object is necessary to complete the operation
+     * @return Log in jsp page with input tabs
+     */
     @Override
     public String execute(HttpServletRequest request) {
         final UserService userService = new UserService();

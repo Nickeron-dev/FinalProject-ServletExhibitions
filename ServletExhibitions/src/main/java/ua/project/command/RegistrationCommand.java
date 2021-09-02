@@ -12,8 +12,17 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.regex.Pattern;
 
+/**
+ * @author Illia Koshkin
+ */
 public class RegistrationCommand implements Command {
     static Logger logger = LogManager.getLogger(RegistrationCommand.class);
+
+    /**
+     * Registration form command
+     * @param request HttpServletRequest object is necessary to complete the operation
+     * @return Jsp page that allows to input user's data
+     */
     @Override
     public String execute(HttpServletRequest request) {
         UserService service = new UserService();

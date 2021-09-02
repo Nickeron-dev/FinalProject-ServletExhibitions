@@ -11,8 +11,17 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Illia Koshkin
+ */
 public class StatisticsCommand implements Command {
     static Logger logger = LogManager.getLogger(StatisticsCommand.class);
+
+    /**
+     * This command allows to see statistics only to ADMIN
+     * @param request HttpServletRequest object is necessary to complete the operation
+     * @return Jsp page with all statistics
+     */
     @Override
     public String execute(HttpServletRequest request) {
         final ExhibitionService exhibitionService = new ExhibitionService();

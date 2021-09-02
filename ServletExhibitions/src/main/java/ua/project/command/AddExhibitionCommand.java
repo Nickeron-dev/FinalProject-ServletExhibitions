@@ -12,8 +12,17 @@ import ua.project.view.View;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLIntegrityConstraintViolationException;
 
+/**
+ * @author Illia Koshkin
+ */
 public class AddExhibitionCommand implements Command {
     static Logger logger = LogManager.getLogger(AddExhibitionCommand.class);
+
+    /**
+     * This command adds exhibition.
+     * @param request HttpServletRequest object is necessary to complete the operation
+     * @return jsp page that allows to input exhibition's data
+     */
     @Override
     public String execute(HttpServletRequest request) {
 
