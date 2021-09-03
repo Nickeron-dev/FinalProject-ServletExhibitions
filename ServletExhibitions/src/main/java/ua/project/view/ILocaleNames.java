@@ -1,5 +1,8 @@
 package ua.project.view;
 
+/**
+ * @author Illia Koshkin
+ */
 public interface ILocaleNames {
 
     String DEFAULT_LANGUAGE = "en";

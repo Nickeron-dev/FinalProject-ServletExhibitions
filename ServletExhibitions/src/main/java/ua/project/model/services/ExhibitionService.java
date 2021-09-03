@@ -29,7 +29,7 @@ public class ExhibitionService {
     /**
      * This method creates new Exhibition Record
      * @param exhibition Exhibition object
-     * @throws SQLIntegrityConstraintViolationException
+     * @throws SQLIntegrityConstraintViolationException in case of invalid input
      */
     public void saveNewExhibition(Exhibition exhibition) throws SQLIntegrityConstraintViolationException {
         try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
@@ -37,36 +37,63 @@ public class ExhibitionService {
         }
     }
 
+    /**
+     * This method gets Exhibition by id
+     * @param id Id of an exhibition
+     * @return Optional of Exhibition
+     */
     public Optional<Exhibition> findById(int id) {
         try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
             return exhibitionDao.findById(id);
         }
     }
 
+    /**
+     * Cancels Exhibition by id
+     * @param id Id of an Exhibition
+     */
     public void cancelById(Integer id) {
         try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
             exhibitionDao.cancelById(id);
         }
     }
 
+    /**
+     * Plans Exhibition by id
+     * @param id Id of an Exhibition
+     */
     public void planById(Integer id) {
         try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
             exhibitionDao.planById(id);
         }
     }
 
+    /**
+     * Divides all exhibitions by pages and gives certain page
+     * @param page Number of a required page
+     * @return util.List with all exhibitions from required page
+     */
     public List<Exhibition> allByPage(Integer page) {
         try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
             return exhibitionDao.allByPage(page);
         }
     }
 
+    /**
+     * Integer amount of pages
+     * @return Integer value with amount of pages
+     */
     public Integer pagesAvailable() {
         try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
             return exhibitionDao.pagesAvailable();
         }
     }
 
+    /**
+     * Filters all exhibitions by date
+     * @param date LocalDate object that will be used to filter
+     * @return util.List of exhibitions
+     */
     public List<Exhibition> filterByDate(LocalDate date) {
         try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
             return exhibitionDao.filterByDate(date);

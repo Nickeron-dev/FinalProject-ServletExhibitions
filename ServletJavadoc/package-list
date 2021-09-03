@@ -1,0 +1,12 @@
+ua.project.command
+ua.project.configurer
+ua.project.containers
+ua.project.model.dao
+ua.project.model.dao.impl
+ua.project.model.dao.mapper
+ua.project.model.entity
+ua.project.model.services
+ua.project.servlets.filters
+ua.project.servlets.listeners
+ua.project.servlets.servlet
+ua.project.view

@@ -2,7 +2,6 @@ package ua.project.servlets.listeners;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ua.project.command.AddExhibitionCommand;
 import ua.project.view.ILocaleNames;
 import ua.project.view.View;
 
@@ -11,6 +10,9 @@ import javax.servlet.ServletRequestListener;
 import java.util.Locale;
 import java.util.Optional;
 
+/**
+ * @author Illia Koshkin
+ */
 public class LocalizationListener implements ServletRequestListener {
     static Logger logger = LogManager.getLogger(LocalizationListener.class);
     @Override
@@ -18,6 +20,10 @@ public class LocalizationListener implements ServletRequestListener {
 
     }
 
+    /**
+     * This listener changes localization
+     * @param servletRequestEvent event object to perform this method
+     */
     @Override
     public void requestInitialized(ServletRequestEvent servletRequestEvent) {
         try {

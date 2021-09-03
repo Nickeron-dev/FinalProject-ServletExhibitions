@@ -2,7 +2,6 @@ package ua.project.servlets.filters;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ua.project.command.AddExhibitionCommand;
 import ua.project.model.entity.Role;
 
 import javax.servlet.*;
@@ -10,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * Acidification filter.
+ * @author Illia Koshkin
  */
 public class AuthFilter implements Filter {
     static Logger logger = LogManager.getLogger(AuthFilter.class);
@@ -18,6 +17,14 @@ public class AuthFilter implements Filter {
     public void init(FilterConfig filterConfig) {
     }
 
+    /**
+     * This method checks user's role and gives or refuses to give an access to a certain page
+     * @param servletRequest ServletRequest object to check session, URI etc.
+     * @param servletResponse ServletResponse object to show short page with message
+     * @param filterChain to continue filtering chain
+     * @throws IOException in case of I/O issue with showing short message page
+     * @throws ServletException in case of issue with request or response
+     */
     @Override
     public void doFilter(final ServletRequest servletRequest,
                          final ServletResponse servletResponse,

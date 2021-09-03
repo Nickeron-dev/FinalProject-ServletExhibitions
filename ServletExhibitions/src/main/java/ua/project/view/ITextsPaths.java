@@ -1,5 +1,8 @@
 package ua.project.view;
 
+/**
+ * @author Illia Koshkin
+ */
 public interface ITextsPaths {
     String HOME = "home.page";
     String WELCOME = "welcome.message";
