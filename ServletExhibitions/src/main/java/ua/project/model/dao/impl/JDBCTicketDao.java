@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Illia Koshkin
+ */
 public class JDBCTicketDao implements TicketDao {
     private final Connection connection;
 
@@ -17,6 +20,11 @@ public class JDBCTicketDao implements TicketDao {
         this.connection = connection;
     }
 
+    /**
+     * This method creates a new Ticket record in database
+     * @param entity Ticket object
+     * @throws SQLIntegrityConstraintViolationException in case of invalid values given to SQL
+     */
     @Override
     public void create(Ticket entity) throws SQLIntegrityConstraintViolationException {
         try(PreparedStatement ps = connection.prepareCall(SQLStatements.CREATE_TICKET)) {
@@ -43,6 +51,11 @@ public class JDBCTicketDao implements TicketDao {
         }
     }
 
+    /**
+     * This method gets Ticket by id
+     * @param id Id of a ticket
+     * @return Optional of Ticket
+     */
     @Override
     public Optional<Ticket> findById(int id) {
         Optional<Ticket> ticket = Optional.empty();
@@ -60,6 +73,10 @@ public class JDBCTicketDao implements TicketDao {
         return ticket;
     }
 
+    /**
+     * Gets all tickets
+     * @return util.List of Ticket
+     */
     @Override
     public List<Ticket> findAll() {
         List<Ticket> result = new ArrayList<>();
@@ -75,6 +92,9 @@ public class JDBCTicketDao implements TicketDao {
         return result;
     }
 
+    /**
+     * Closes connection
+     */
     @Override
     public void close() {
         try {
@@ -84,6 +104,11 @@ public class JDBCTicketDao implements TicketDao {
         }
     }
 
+    /**
+     * Counts all tickets to an Exhibition by id
+     * @param exhibitionId Id of an exhibition
+     * @return amount of tickets in type long
+     */
     @Override
     public long countByExhibitionId(Integer exhibitionId) {
         long amount = 0;

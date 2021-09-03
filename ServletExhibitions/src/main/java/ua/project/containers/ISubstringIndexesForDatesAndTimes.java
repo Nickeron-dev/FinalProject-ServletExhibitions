@@ -1,5 +1,8 @@
 package ua.project.containers;
 
+/**
+ * @author Illia Koshkin
+ */
 public interface ISubstringIndexesForDatesAndTimes {
     int YEAR_BEGIN_INDEX = 0;
     int YEAR_END_INDEX = 4;

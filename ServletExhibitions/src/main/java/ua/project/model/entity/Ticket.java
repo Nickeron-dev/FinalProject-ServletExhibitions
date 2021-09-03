@@ -1,5 +1,8 @@
 package ua.project.model.entity;
 
+/**
+ * @author Illia Koshkin
+ */
 public class Ticket {
 
     private Integer id;

@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Illia Koshkin
+ */
 public class JDBCUserDao implements UserDao {
     private final Connection connection;
 
@@ -18,6 +21,11 @@ public class JDBCUserDao implements UserDao {
     }
 
 
+    /**
+     * This method creates a new User record in database
+     * @param entity User object
+     * @throws SQLIntegrityConstraintViolationException in case of invalid input
+     */
     @Override
     public void create(User entity) throws SQLIntegrityConstraintViolationException {
         try(PreparedStatement ps = connection.prepareCall(SQLStatements.CREATE_USER)) {
@@ -44,6 +52,11 @@ public class JDBCUserDao implements UserDao {
         }
     }
 
+    /**
+     * This method gets User by id
+     * @param id Id of a user
+     * @return Optional of User
+     */
     @Override
     public Optional<User> findById(int id) {
         Optional<User> user = Optional.empty();
@@ -61,8 +74,10 @@ public class JDBCUserDao implements UserDao {
         return user;
     }
 
-
-
+    /**
+     * Gets all users
+     * @return util.List of User
+     */
     @Override
     public List<User> findAll() {
         List<User> result = new ArrayList<>();
@@ -78,6 +93,9 @@ public class JDBCUserDao implements UserDao {
         return result;
     }
 
+    /**
+     * Closes connection
+     */
     @Override
     public void close()  {
         try {
@@ -87,6 +105,11 @@ public class JDBCUserDao implements UserDao {
         }
     }
 
+    /**
+     * Username of a User
+     * @param name String object with username
+     * @return Optional of User
+     */
     @Override
     public Optional<User> findByName(String name) {
 

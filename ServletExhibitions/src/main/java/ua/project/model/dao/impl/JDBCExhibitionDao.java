@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Illia Koshkin
+ */
 public class JDBCExhibitionDao implements ExhibitionDao {
     private final Connection connection;
 
@@ -18,7 +21,11 @@ public class JDBCExhibitionDao implements ExhibitionDao {
         this.connection = connection;
     }
 
-
+    /**
+     * This method creates a new Exhibition record in database
+     * @param entity Exhibition object
+     * @throws SQLIntegrityConstraintViolationException in case of invalid input
+     */
     @Override
     public void create(Exhibition entity) throws SQLIntegrityConstraintViolationException {
         try(PreparedStatement ps = connection.prepareCall(SQLStatements.CREATE_EXHIBITION)) {
@@ -49,6 +56,11 @@ public class JDBCExhibitionDao implements ExhibitionDao {
         }
     }
 
+    /**
+     * This method gets Exhibition by id
+     * @param id Id of an exhibition
+     * @return Optional of Exhibition
+     */
     @Override
     public Optional<Exhibition> findById(int id) {
         Optional<Exhibition> exhibition = Optional.empty();
@@ -66,8 +78,10 @@ public class JDBCExhibitionDao implements ExhibitionDao {
         return exhibition;
     }
 
-
-
+    /**
+     * Gets all exhibitions
+     * @return util.List of Exhibition
+     */
     @Override
     public List<Exhibition> findAll() {
         List<Exhibition> result = new ArrayList<>();
@@ -83,6 +97,9 @@ public class JDBCExhibitionDao implements ExhibitionDao {
         return result;
     }
 
+    /**
+     * Closes connection
+     */
     @Override
     public void close()  {
         try {
@@ -92,6 +109,10 @@ public class JDBCExhibitionDao implements ExhibitionDao {
         }
     }
 
+    /**
+     * Cancels Exhibition by id
+     * @param id Id of an Exhibition
+     */
     @Override
     public void cancelById(Integer id) {
         try(PreparedStatement ps = connection.prepareCall(SQLStatements.CANCEL_BY_ID)) {
@@ -108,6 +129,10 @@ public class JDBCExhibitionDao implements ExhibitionDao {
         }
     }
 
+    /**
+     * Plans Exhibition by id
+     * @param id Id of an Exhibition
+     */
     @Override
     public void planById(Integer id) {
         try(PreparedStatement ps = connection.prepareCall(SQLStatements.PLAN_BY_ID)) {
@@ -124,6 +149,11 @@ public class JDBCExhibitionDao implements ExhibitionDao {
         }
     }
 
+    /**
+     * Divides all exhibitions by pages and gives certain page
+     * @param page Number of a required page
+     * @return util.List with all exhibitions from required page
+     */
     @Override
     public List<Exhibition> allByPage(Integer page) {
         List<Exhibition> result = new ArrayList<>();
@@ -141,6 +171,10 @@ public class JDBCExhibitionDao implements ExhibitionDao {
         return result;
     }
 
+    /**
+     * Integer amount of pages
+     * @return Integer value with amount of pages
+     */
     @Override
     public Integer pagesAvailable() {
         int number = 0;
@@ -156,6 +190,11 @@ public class JDBCExhibitionDao implements ExhibitionDao {
         return number;
     }
 
+    /**
+     * Filters all exhibitions by date
+     * @param date LocalDate object that will be used to filter
+     * @return util.List of exhibitions
+     */
     @Override
     public List<Exhibition> filterByDate(LocalDate date) {
         List<Exhibition> result = new ArrayList<>();

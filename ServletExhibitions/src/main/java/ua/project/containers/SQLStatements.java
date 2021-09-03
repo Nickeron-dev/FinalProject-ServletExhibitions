@@ -1,5 +1,8 @@
 package ua.project.containers;
 
+/**
+ * @author Illia Koshkin
+ */
 public interface SQLStatements {
     String CREATE_EXHIBITION = "INSERT INTO exhibitions (topic, startDate, endDate, startTime, endTime," +
             " rooms, price, state) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";

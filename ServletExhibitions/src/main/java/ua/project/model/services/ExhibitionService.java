@@ -9,16 +9,28 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Illia Koshkin
+ */
 public class ExhibitionService {
 
     DaoFactory daoFactory = DaoFactory.getInstance();
 
+    /**
+     * This method gets all Exhibitions and closes connection
+     * @return util.List of all exhibitions
+     */
     public List<Exhibition> findAll() {
         try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
             return exhibitionDao.findAll();
         }
     }
 
+    /**
+     * This method creates new Exhibition Record
+     * @param exhibition Exhibition object
+     * @throws SQLIntegrityConstraintViolationException
+     */
     public void saveNewExhibition(Exhibition exhibition) throws SQLIntegrityConstraintViolationException {
         try(ExhibitionDao exhibitionDao = daoFactory.createExhibitionDao()) {
             exhibitionDao.create(exhibition);

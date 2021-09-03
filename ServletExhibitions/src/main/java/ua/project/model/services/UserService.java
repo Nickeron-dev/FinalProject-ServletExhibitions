@@ -7,6 +7,9 @@ import ua.project.model.entity.User;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Optional;
 
+/**
+ * @author Illia Koshkin
+ */
 public class UserService {
 
     DaoFactory daoFactory = DaoFactory.getInstance();

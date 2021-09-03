@@ -6,6 +6,9 @@ import ua.project.model.entity.Ticket;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 
+/**
+ * @author Illia Koshkin
+ */
 public class TicketService {
 
     DaoFactory daoFactory = DaoFactory.getInstance();

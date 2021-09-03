@@ -3,13 +3,20 @@ package ua.project.model.dao.impl;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ua.project.command.AddExhibitionCommand;
 
 import javax.sql.DataSource;
 
+/**
+ * @author Illia Koshkin
+ */
 public class ConnectionPoolHolder {
     private static volatile DataSource dataSource;
     static Logger logger = LogManager.getLogger(ConnectionPoolHolder.class);
+
+    /**
+     * This method provides a connection to a MySQL database
+     * @return DataSource object with connection
+     */
     public static DataSource getDataSource(){
 
         if (dataSource == null){

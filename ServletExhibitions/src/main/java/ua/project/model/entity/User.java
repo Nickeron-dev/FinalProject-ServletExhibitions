@@ -73,6 +73,10 @@ public class User {
         this.role = role;
     }
 
+    /**
+     * Overridden toString() method
+     * @return String of all object's values
+     */
     @Override
     public String toString() {
         return "name: " + getLogin() + " id: " + getId() + " password: " + getPassword() + " role: " + getRole();

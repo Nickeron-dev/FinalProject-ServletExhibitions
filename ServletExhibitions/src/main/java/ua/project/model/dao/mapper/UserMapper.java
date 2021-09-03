@@ -7,7 +7,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
+/**
+ * @author Illia Koshkin
+ */
 public class UserMapper implements ObjectMapper<User> {
+    /**
+     * This method takes User from a ResultSet
+     * @param resultSet ResultSet of an SQL statement
+     * @return User object
+     * @throws SQLException if nothing was found
+     */
     @Override
     public User extractFromResultSet(ResultSet resultSet) throws SQLException {
         User user = new User();
@@ -27,6 +36,12 @@ public class UserMapper implements ObjectMapper<User> {
         return user;
     }
 
+    /**
+     * Removes all repeated values
+     * @param cache Map with users
+     * @param user Object of a user that will be put if absent
+     * @return User from Map with the same id
+     */
     @Override
     public User makeUnique(Map<Integer, User> cache, User user) {
         cache.putIfAbsent(user.getId(), user);

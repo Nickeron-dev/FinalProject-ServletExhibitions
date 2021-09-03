@@ -3,6 +3,9 @@ package ua.project.model.entity;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * @author Illia Koshkin
+ */
 public class ExhibitionWithVisitorAmount {
 
     private final Integer id;
@@ -70,6 +73,10 @@ public class ExhibitionWithVisitorAmount {
         return visitors;
     }
 
+    /**
+     * Overridden toString() method
+     * @return String of all object's values
+     */
     @Override
     public String toString() {
         return "ExhibitionWithVisitorAmount{" +
